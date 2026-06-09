@@ -80,20 +80,20 @@
         </div>
     </main>
 
-    <footer class="border-t border-slate-900 bg-slate-950/80 py-6 text-center text-sm text-slate-500">
-        &copy; 2026 vi.video. Built for Developers.
+    <footer class="border-t border-slate-900 bg-slate-950/80 py-6 text-center text-sm text-slate-500 flex flex-col sm:flex-row justify-between items-center px-8 gap-4">
+        <div>&copy; 2026 vi.video. Built for Developers.</div>
+        <a href="#host" class="text-slate-700 hover:text-violet-500 text-xs transition duration-150">Admin Console</a>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // Connects your frontend directly to a shared global cloud storage system
-        // Replace these placeholders with your actual keys from your Supabase Dashboard project settings.
+        // Paste your unique project connection credentials here from your supabase.com workspace settings
         const SUPABASE_URL = "https://your-project-id.supabase.co";
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.your-actual-anon-key";
         
         const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // View Routing Engine (Maintains the hidden /#host state functionality)
+        // View Routing Engine
         function handleRouting() {
             const currentHash = window.location.hash;
             const publicView = document.getElementById('public-view');
@@ -103,18 +103,19 @@
                 publicView.classList.add('hidden');
                 hostView.classList.remove('hidden');
                 document.title = "Host Panel | vi.video";
+                window.scrollTo(0, 0);
             } else {
                 hostView.classList.add('hidden');
                 publicView.classList.remove('hidden');
                 document.title = "vi.video | Premium Coding Tutorials";
-                renderVideos(); // Fetches live, universally shared video entries
+                renderVideos(); 
             }
         }
 
         window.addEventListener('hashchange', handleRouting);
         window.addEventListener('DOMContentLoaded', handleRouting);
 
-        // Formats descriptions seamlessly if snippets are wrapped in straight double quotes
+        // Code Formatter Panel Parsing Engine
         function parseDescription(desc) {
             const regex = /"([^"]+)"/g;
             if (desc.includes('"')) {
@@ -137,7 +138,7 @@
             return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
         }
 
-        // Copy Feature Clipboard API Logic
+        // Clipboard Copy Management Logic
         function copyToClipboard(button) {
             const codeBlock = button.previousElementSibling;
             navigator.clipboard.writeText(codeBlock.innerText).then(() => {
@@ -154,7 +155,7 @@
             });
         }
 
-        // Pull and display videos submitted across the world by any host agent
+        // Pull videos submitted from database table layer
         async function renderVideos() {
             const container = document.getElementById('video-list');
             container.innerHTML = '<div class="text-center py-12 text-slate-500 font-medium">Loading tutorials from network...</div>';
@@ -165,7 +166,7 @@
                 .order('created_at', { ascending: false });
 
             if (error || !videos || videos.length === 0) {
-                container.innerHTML = `<div class="text-center py-12 text-slate-500 font-medium">No tutorials hosted yet. Access /#host to add content.</div>`;
+                container.innerHTML = `<div class="text-center py-12 text-slate-500 font-medium">No tutorials hosted yet. Use the Console to add content.</div>`;
                 return;
             }
 
@@ -188,7 +189,7 @@
             });
         }
 
-        // Submits forms straight out to your database tables instead of local browser cookies
+        // Handle submissions to the global database layer
         document.getElementById('add-video-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -216,7 +217,7 @@
 
             this.reset();
             alert("Video published successfully to the global feed!");
-            window.location.hash = ''; // Automatically redirects back to public view home feed
+            window.location.hash = ''; // Re-routes to main feed
         });
     </script>
 </body>
