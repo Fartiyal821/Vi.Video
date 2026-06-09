@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body { font-family: 'Inter', sans-serif; }
-        /* Professional Custom Scrollbar */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
@@ -22,7 +21,7 @@
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col">
 
     <header class="border-b border-slate-800 bg-slate-900/50 backdrop-blur sticky top-0 z-50 px-6 py-4 flex justify-between items-center">
-        <div class="flex items-center space-x-3 cursor-pointer" onclick="window.location.hash = ''">
+        <div class="flex items-center space-x-3 cursor-pointer" onclick="window.location.reload()">
             <div class="bg-gradient-to-tr from-violet-600 to-fuchsia-600 p-2.5 rounded-xl shadow-lg shadow-violet-500/20 flex items-center justify-center">
                 <i class="fa-solid fa-terminal text-lg text-white"></i>
             </div>
@@ -33,7 +32,7 @@
         </nav>
     </header>
 
-    <main id="public-view" class="flex-grow container mx-auto px-4 py-8">
+    <main class="flex-grow container mx-auto px-4 py-8">
         <div class="max-w-4xl mx-auto space-y-6 text-center mb-12">
             <h1 class="text-4xl font-extrabold sm:text-5xl tracking-tight text-white">Master Code, One Video at a Time</h1>
             <p class="text-lg text-slate-400">Handpicked programming tutorials, complete with clear, copy-pasteable code guides.</p>
@@ -43,77 +42,19 @@
             </div>
     </main>
 
-    <main id="host-view" style="display: none;" class="flex-grow container mx-auto px-4 py-8">
-        <div class="max-w-3xl mx-auto bg-slate-900 border border-slate-800 rounded-2xl p-6 md:p-8 shadow-2xl">
-            <div class="flex items-center space-x-3 mb-6 border-b border-slate-800 pb-4">
-                <i class="fa-solid fa-sliders text-2xl text-violet-500"></i>
-                <h2 class="text-2xl font-bold text-white">Host Console Panel</h2>
-            </div>
-            
-            <form id="add-video-form" class="space-y-6">
-                <div>
-                    <label class="block text-sm font-medium text-slate-300 mb-2">YouTube Video Embed Link or iframe Code</label>
-                    <input type="text" id="video-iframe" placeholder='e.g., https://www.youtube.com/embed/dQw4w9WgXcQ' 
-                        class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-slate-200 focus:outline-none focus:border-violet-500 font-mono text-sm" required>
-                    <p class="text-xs text-slate-500 mt-1.5">Provide either the direct embed URL or copy the entire <code>&lt;iframe&gt;</code> snippet from YouTube.</p>
-                </div>
-
-                <div>
-                    <label class="block text-sm font-medium text-slate-300 mb-2">Video Title</label>
-                    <input type="text" id="video-title" placeholder="e.g., Learn Advanced Node.js Architecture" 
-                        class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-slate-200 focus:outline-none focus:border-violet-500" required>
-                </div>
-
-                <div>
-                    <label class="block text-sm font-medium text-slate-300 mb-2">Description / Code Guide</label>
-                    <textarea id="video-desc" rows="6" placeholder='To create code blocks, wrap the content inside double quotes like: "const express = require(&#10;express&#10;);" ' 
-                        class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-slate-200 focus:outline-none focus:border-violet-500 font-mono text-sm" required></textarea>
-                </div>
-
-                <div class="flex justify-end pt-2">
-                    <button type="submit" class="bg-violet-600 hover:bg-violet-500 text-white font-medium px-6 py-3 rounded-xl transition duration-200 flex items-center space-x-2 cursor-pointer shadow-lg shadow-violet-600/20">
-                        <i class="fa-solid fa-plus text-sm"></i>
-                        <span>Publish Video</span>
-                    </button>
-                </div>
-            </form>
-        </div>
-    </main>
-
     <footer class="border-t border-slate-900 bg-slate-950/80 py-6 text-center text-sm text-slate-500 flex flex-col sm:flex-row justify-between items-center px-8 gap-4">
         <div>&copy; 2026 vi.video. Built for Developers.</div>
-        <a href="#host" class="text-slate-700 hover:text-violet-500 text-xs transition duration-150">Admin Console</a>
+        <a href="host.html" class="text-slate-700 hover:text-violet-500 text-xs transition duration-150">Admin Console</a>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // Paste your unique project connection credentials here from your supabase.com workspace settings
+        // Replace with your actual project credentials from your Supabase settings dashboard
         const SUPABASE_URL = "https://your-project-id.supabase.co";
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.your-actual-anon-key";
-        
         const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // Explicit View Routing Engine (Fixed to explicitly toggle display block/none)
-        function handleRouting() {
-            const currentHash = window.location.hash;
-            const publicView = document.getElementById('public-view');
-            const hostView = document.getElementById('host-view');
-
-            if (currentHash === '#host') {
-                publicView.style.display = 'none';
-                hostView.style.display = 'block';
-                document.title = "Host Panel | vi.video";
-                window.scrollTo(0, 0);
-            } else {
-                hostView.style.display = 'none';
-                publicView.style.display = 'block';
-                document.title = "vi.video | Premium Coding Tutorials";
-                renderVideos(); 
-            }
-        }
-
-        window.addEventListener('hashchange', handleRouting);
-        window.addEventListener('DOMContentLoaded', handleRouting);
+        window.addEventListener('DOMContentLoaded', renderVideos);
 
         // Code Formatter Panel Parsing Engine
         function parseDescription(desc) {
@@ -138,16 +79,14 @@
             return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
         }
 
-        // Clipboard Copy Management Logic
+        // Clipboard Copy Logic
         function copyToClipboard(button) {
             const codeBlock = button.previousElementSibling;
             navigator.clipboard.writeText(codeBlock.innerText).then(() => {
                 const textSpan = button.querySelector('span');
                 const icon = button.querySelector('i');
-                
                 textSpan.innerText = "Copied!";
                 icon.className = "fa-solid fa-check text-emerald-400";
-                
                 setTimeout(() => {
                     textSpan.innerText = "Copy";
                     icon.className = "fa-regular fa-copy";
@@ -155,7 +94,7 @@
             });
         }
 
-        // Pull videos submitted from database table layer
+        // Pull videos from cloud database layer
         async function renderVideos() {
             const container = document.getElementById('video-list');
             container.innerHTML = '<div class="text-center py-12 text-slate-500 font-medium">Loading tutorials from network...</div>';
@@ -166,7 +105,7 @@
                 .order('created_at', { ascending: false });
 
             if (error || !videos || videos.length === 0) {
-                container.innerHTML = `<div class="text-center py-12 text-slate-500 font-medium">No tutorials hosted yet. Use the Console to add content.</div>`;
+                container.innerHTML = `<div class="text-center py-12 text-slate-500 font-medium">No tutorials hosted yet. Access Admin Console to add content.</div>`;
                 return;
             }
 
@@ -188,37 +127,6 @@
                 container.appendChild(item);
             });
         }
-
-        // Handle submissions to the global database layer
-        document.getElementById('add-video-form').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            let inputField = document.getElementById('video-iframe').value.trim();
-            const title = document.getElementById('video-title').value.trim();
-            const description = document.getElementById('video-desc').value.trim();
-            
-            let embedUrl = inputField;
-
-            if (inputField.startsWith('<iframe')) {
-                const match = inputField.match(/src=["']([^"']+)["']/);
-                if (match && match[1]) {
-                    embedUrl = match[1];
-                }
-            }
-
-            const { error } = await supabase
-                .from('videos')
-                .insert([{ title, embedUrl, description }]);
-
-            if (error) {
-                alert("Cloud Sync Failure: " + error.message);
-                return;
-            }
-
-            this.reset();
-            alert("Video published successfully to the global feed!");
-            window.location.hash = ''; // Re-routes to main feed
-        });
     </script>
 </body>
 </html>
