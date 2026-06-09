@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
     <meta name="google-adsense-account" content="ca-pub-8208662455546800">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8208662455546800"
-     crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8208662455546800" crossorigin="anonymous"></script>
     <meta name="google-site-verification" content="pD9ubpXlh3hcyuAhubvo56L1B3kIgpqnzDF3MOf-Kz8" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -84,16 +83,17 @@
     <footer class="border-t border-slate-900 bg-slate-950/80 py-6 text-center text-sm text-slate-500">
         &copy; 2026 vi.video. Built for Developers.
     </footer>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // 1. DATABASE CONFIGURATION
-        // Replace these placeholder values with your actual project keys from supabase.com
+        // Connects your frontend directly to a shared global cloud storage system
+        // Replace these placeholders with your actual keys from your Supabase Dashboard project settings.
         const SUPABASE_URL = "https://your-project-id.supabase.co";
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.your-actual-anon-key";
         
         const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // View Routing Management
+        // View Routing Engine (Maintains the hidden /#host state functionality)
         function handleRouting() {
             const currentHash = window.location.hash;
             const publicView = document.getElementById('public-view');
@@ -107,14 +107,14 @@
                 hostView.classList.add('hidden');
                 publicView.classList.remove('hidden');
                 document.title = "vi.video | Premium Coding Tutorials";
-                renderVideos(); // Fetches live shared cloud data
+                renderVideos(); // Fetches live, universally shared video entries
             }
         }
 
         window.addEventListener('hashchange', handleRouting);
         window.addEventListener('DOMContentLoaded', handleRouting);
 
-        // Parse descriptions to format string blocks inside double quotes into code panels
+        // Formats descriptions seamlessly if snippets are wrapped in straight double quotes
         function parseDescription(desc) {
             const regex = /"([^"]+)"/g;
             if (desc.includes('"')) {
@@ -137,7 +137,7 @@
             return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
         }
 
-        // Copy Feature Logic
+        // Copy Feature Clipboard API Logic
         function copyToClipboard(button) {
             const codeBlock = button.previousElementSibling;
             navigator.clipboard.writeText(codeBlock.innerText).then(() => {
@@ -154,12 +154,11 @@
             });
         }
 
-        // 2. LIVE CLOUD RENDER LOGIC
+        // Pull and display videos submitted across the world by any host agent
         async function renderVideos() {
             const container = document.getElementById('video-list');
-            container.innerHTML = '<div class="text-center py-12 text-slate-500 font-medium">Loading tutorials from cloud database...</div>';
+            container.innerHTML = '<div class="text-center py-12 text-slate-500 font-medium">Loading tutorials from network...</div>';
 
-            // Pull live videos added by anyone globally sorted by newest first
             const { data: videos, error } = await supabase
                 .from('videos')
                 .select('*')
@@ -189,7 +188,7 @@
             });
         }
 
-        // 3. GLOBAL SUBMISSION PROCESSSING
+        // Submits forms straight out to your database tables instead of local browser cookies
         document.getElementById('add-video-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -206,19 +205,18 @@
                 }
             }
 
-            // Insert directly into global data layer table
             const { error } = await supabase
                 .from('videos')
                 .insert([{ title, embedUrl, description }]);
 
             if (error) {
-                alert("Database Error: " + error.message);
+                alert("Cloud Sync Failure: " + error.message);
                 return;
             }
 
             this.reset();
-            alert("Video published to global network successfully!");
-            window.location.hash = '';
+            alert("Video published successfully to the global feed!");
+            window.location.hash = ''; // Automatically redirects back to public view home feed
         });
     </script>
 </body>
