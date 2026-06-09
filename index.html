@@ -49,14 +49,13 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // Replace with your actual project credentials from your Supabase settings dashboard
+        // CRITICAL: Replace these strings with your actual database workspace keys
         const SUPABASE_URL = "https://your-project-id.supabase.co";
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.your-actual-anon-key";
         const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         window.addEventListener('DOMContentLoaded', renderVideos);
 
-        // Code Formatter Panel Parsing Engine
         function parseDescription(desc) {
             const regex = /"([^"]+)"/g;
             if (desc.includes('"')) {
@@ -79,7 +78,6 @@
             return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
         }
 
-        // Clipboard Copy Logic
         function copyToClipboard(button) {
             const codeBlock = button.previousElementSibling;
             navigator.clipboard.writeText(codeBlock.innerText).then(() => {
@@ -94,7 +92,7 @@
             });
         }
 
-        // Pull videos from cloud database layer
+        // Pulls all globally published video items from the network storage layer
         async function renderVideos() {
             const container = document.getElementById('video-list');
             container.innerHTML = '<div class="text-center py-12 text-slate-500 font-medium">Loading tutorials from network...</div>';
