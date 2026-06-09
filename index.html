@@ -1,130 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="google-adsense-account" content="ca-pub-8208662455546800">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8208662455546800" crossorigin="anonymous"></script>
-    <meta name="google-site-verification" content="pD9ubpXlh3hcyuAhubvo56L1B3kIgpqnzDF3MOf-Kz8" />
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vi.Video | Premium Coding Tutorials</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body { font-family: 'Inter', sans-serif; }
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0f172a; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #475569; }
-    </style>
+<meta charset="UTF-8">
+<title>vi.video</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- FAVICON -->
+<link rel="icon" type="image/png"
+href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABKUlEQVR4nO3aQQrCQBBA0f//Z9sCk0Qm2gQ2QbQmQ3kQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQAAAAAElFTkSuQmCC">
+
+<style>
+body{
+margin:0;
+font-family:Arial, sans-serif;
+background:#0f0f1a;
+color:white;
+}
+
+header{
+padding:20px;
+background:#111827;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+header h1{
+color:#4ade80;
+margin:0;
+}
+
+.container{
+padding:20px;
+}
+
+.video-card{
+background:#1f2937;
+padding:15px;
+margin-bottom:20px;
+border-radius:10px;
+box-shadow:0 0 10px rgba(0,0,0,0.4);
+}
+
+iframe{
+width:100%;
+height:400px;
+border-radius:10px;
+}
+
+.desc{
+margin-top:10px;
+background:#111827;
+padding:10px;
+border-radius:8px;
+}
+
+.copybox{
+background:#000;
+padding:10px;
+border-radius:5px;
+white-space:pre-wrap;
+user-select:all;
+}
+
+button{
+padding:10px 15px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+background:#4ade80;
+color:black;
+font-weight:bold;
+}
+
+.host-panel{
+display:none;
+padding:20px;
+}
+
+input, textarea{
+width:100%;
+padding:10px;
+margin:10px 0;
+border-radius:6px;
+border:none;
+}
+
+small{
+color:#aaa;
+}
+</style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col">
 
-    <header class="border-b border-slate-800 bg-slate-900/50 backdrop-blur sticky top-0 z-50 px-6 py-4 flex justify-between items-center">
-        <div class="flex items-center space-x-3 cursor-pointer" onclick="window.location.reload()">
-            <div class="bg-gradient-to-tr from-violet-600 to-fuchsia-600 p-2.5 rounded-xl shadow-lg shadow-violet-500/20 flex items-center justify-center">
-                <i class="fa-solid fa-terminal text-lg text-white"></i>
-            </div>
-            <span class="text-xl font-bold tracking-tight bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">vi.<span class="text-violet-500">video</span></span>
-        </div>
-        <nav class="flex items-center space-x-6">
-            <span class="text-xs bg-slate-800 text-slate-400 px-3 py-1 rounded-full border border-slate-700">Curated Dev Content</span>
-        </nav>
-    </header>
+<body>
 
-    <main class="flex-grow container mx-auto px-4 py-8">
-        <div class="max-w-4xl mx-auto space-y-6 text-center mb-12">
-            <h1 class="text-4xl font-extrabold sm:text-5xl tracking-tight text-white">Master Code, One Video at a Time</h1>
-            <p class="text-lg text-slate-400">Handpicked programming tutorials, complete with clear, copy-pasteable code guides.</p>
-        </div>
+<header>
+<h1>vi.video</h1>
+<span>Professional Coding Video Hub</span>
+</header>
 
-        <div id="video-list" class="max-w-5xl mx-auto space-y-16">
-            </div>
-    </main>
+<!-- PUBLIC VIEW -->
+<div class="container" id="publicView"></div>
 
-    <footer class="border-t border-slate-900 bg-slate-950/80 py-6 text-center text-sm text-slate-500 flex flex-col sm:flex-row justify-between items-center px-8 gap-4">
-        <div>&copy; 2026 vi.video. Built for Developers.</div>
-        <a href="host.html" class="text-slate-700 hover:text-violet-500 text-xs transition duration-150">Admin Console</a>
-    </footer>
+<!-- HOST PANEL -->
+<div class="host-panel" id="hostPanel">
+<h2>Host Panel (Hidden Mode)</h2>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script>
-        // CRITICAL: Replace these strings with your actual database workspace keys
-        const SUPABASE_URL = "https://your-project-id.supabase.co";
-        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.your-actual-anon-key";
-        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+<small>Paste full YouTube iframe code below</small>
+<textarea id="iframeCode" placeholder="<iframe ...></iframe>"></textarea>
 
-        window.addEventListener('DOMContentLoaded', renderVideos);
+<small>Description (use "" for copyable block)</small>
+<textarea id="desc"></textarea>
 
-        function parseDescription(desc) {
-            const regex = /"([^"]+)"/g;
-            if (desc.includes('"')) {
-                return desc.replace(regex, function(match, captureGroup) {
-                    return `
-                        <div class="relative group my-4">
-                            <pre class="bg-slate-900 border border-slate-800 text-emerald-400 p-4 rounded-xl overflow-x-auto font-mono text-sm leading-relaxed block shadow-inner selection:bg-emerald-500/20">${escapeHtml(captureGroup.trim())}</pre>
-                            <button onclick="copyToClipboard(this)" class="absolute top-3 right-3 opacity-0 group-hover:opacity-100 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 hover:text-white px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all duration-150 flex items-center space-x-1 cursor-pointer">
-                                <i class="fa-regular fa-copy"></i>
-                                <span>Copy</span>
-                            </button>
-                        </div>
-                    `;
-                });
-            }
-            return `<p class="text-slate-300 leading-relaxed">${escapeHtml(desc)}</p>`;
-        }
+<button onclick="addVideo()">Add Video</button>
+</div>
 
-        function escapeHtml(text) {
-            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        }
+<script>
+// detect host mode
+const isHost = window.location.pathname.includes("/host");
 
-        function copyToClipboard(button) {
-            const codeBlock = button.previousElementSibling;
-            navigator.clipboard.writeText(codeBlock.innerText).then(() => {
-                const textSpan = button.querySelector('span');
-                const icon = button.querySelector('i');
-                textSpan.innerText = "Copied!";
-                icon.className = "fa-solid fa-check text-emerald-400";
-                setTimeout(() => {
-                    textSpan.innerText = "Copy";
-                    icon.className = "fa-regular fa-copy";
-                }, 2000);
-            });
-        }
+const publicView = document.getElementById("publicView");
+const hostPanel = document.getElementById("hostPanel");
 
-        // Pulls all globally published video items from the network storage layer
-        async function renderVideos() {
-            const container = document.getElementById('video-list');
-            container.innerHTML = '<div class="text-center py-12 text-slate-500 font-medium">Loading tutorials from network...</div>';
+let videos = JSON.parse(localStorage.getItem("vivideos") || "[]");
 
-            const { data: videos, error } = await supabase
-                .from('videos')
-                .select('*')
-                .order('created_at', { ascending: false });
+function render(){
+publicView.innerHTML = "";
 
-            if (error || !videos || videos.length === 0) {
-                container.innerHTML = `<div class="text-center py-12 text-slate-500 font-medium">No tutorials hosted yet. Access Admin Console to add content.</div>`;
-                return;
-            }
+videos.forEach(v => {
 
-            container.innerHTML = '';
-            videos.forEach(video => {
-                const item = document.createElement('div');
-                item.className = "bg-slate-900/40 border border-slate-800/80 rounded-2xl overflow-hidden shadow-xl flex flex-col backdrop-blur-sm";
-                item.innerHTML = `
-                    <div class="relative w-full aspect-video bg-black">
-                        <iframe src="${video.embedUrl}" class="absolute top-0 left-0 w-full h-full border-0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-                        </iframe>
-                    </div>
-                    <div class="p-6 md:p-8 space-y-4">
-                        <h3 class="text-xl md:text-2xl font-bold text-white tracking-tight">${escapeHtml(video.title)}</h3>
-                        <div class="text-slate-300 space-y-2 whitespace-pre-line text-sm md:text-base">${parseDescription(video.description)}</div>
-                    </div>
-                `;
-                container.appendChild(item);
-            });
-        }
-    </script>
+let descHTML;
+
+if(v.desc.startsWith('"') && v.desc.endsWith('"')){
+descHTML = `<div class="copybox">${v.desc.slice(1,-1)}</div>`;
+} else {
+descHTML = `<div class="desc">${v.desc}</div>`;
+}
+
+publicView.innerHTML += `
+<div class="video-card">
+${v.iframe}
+${descHTML}
+</div>
+`;
+});
+}
+
+function addVideo(){
+const iframe = document.getElementById("iframeCode").value;
+const desc = document.getElementById("desc").value;
+
+videos.push({iframe, desc});
+localStorage.setItem("vivideos", JSON.stringify(videos));
+
+document.getElementById("iframeCode").value = "";
+document.getElementById("desc").value = "";
+
+render();
+alert("Video Added!");
+}
+
+// mode switch
+if(isHost){
+hostPanel.style.display = "block";
+} else {
+render();
+}
+</script>
+
 </body>
 </html>
