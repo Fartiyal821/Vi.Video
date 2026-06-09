@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vi.Video | Premium Coding Tutorials</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        /* Professional Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col">
+
+    <header class="border-b border-slate-800 bg-slate-900/50 backdrop-blur sticky top-0 z-50 px-6 py-4 flex justify-between items-center">
+        <div class="flex items-center space-x-3 cursor-pointer" onclick="window.location.hash = ''">
+            <div class="bg-gradient-to-tr from-violet-600 to-fuchsia-600 p-2.5 rounded-xl shadow-lg shadow-violet-500/20 flex items-center justify-center">
+                <i class="fa-solid fa-terminal text-lg text-white"></i>
+            </div>
+            <span class="text-xl font-bold tracking-tight bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">vi.<span class="text-violet-500">video</span></span>
+        </div>
+        <nav class="flex items-center space-x-6">
+            <span class="text-xs bg-slate-800 text-slate-400 px-3 py-1 rounded-full border border-slate-700">Curated Dev Content</span>
+        </nav>
+    </header>
+
+    <main id="public-view" class="flex-grow container mx-auto px-4 py-8">
+        <div class="max-w-4xl mx-auto space-y-6 text-center mb-12">
+            <h1 class="text-4xl font-extrabold sm:text-5xl tracking-tight text-white">Master Code, One Video at a Time</h1>
+            <p class="text-lg text-slate-400">Handpicked programming tutorials, complete with clear, copy-pasteable code guides.</p>
+        </div>
+
+        <div id="video-list" class="max-w-5xl mx-auto space-y-16">
+            </div>
+    </main>
+
+    <main id="host-view" class="hidden flex-grow container mx-auto px-4 py-8">
+        <div class="max-w-3xl mx-auto bg-slate-900 border border-slate-800 rounded-2xl p-6 md:p-8 shadow-2xl">
+            <div class="flex items-center space-x-3 mb-6 border-b border-slate-800 pb-4">
+                <i class="fa-solid fa-sliders text-2xl text-violet-500"></i>
+                <h2 class="text-2xl font-bold text-white">Host Console Panel</h2>
+            </div>
+            
+            <form id="add-video-form" class="space-y-6">
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-2">YouTube Video Embed Link or iframe Code</label>
+                    <input type="text" id="video-iframe" placeholder='e.g., https://www.youtube.com/embed/dQw4w9WgXcQ' 
+                        class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-slate-200 focus:outline-none focus:border-violet-500 font-mono text-sm" required>
+                    <p class="text-xs text-slate-500 mt-1.5">Provide either the direct embed URL or copy the entire <code>&lt;iframe&gt;</code> snippet from YouTube.</p>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-2">Video Title</label>
+                    <input type="text" id="video-title" placeholder="e.g., Learn Advanced Node.js Architecture" 
+                        class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-slate-200 focus:outline-none focus:border-violet-500" required>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-2">Description / Code Guide</label>
+                    <textarea id="video-desc" rows="6" placeholder='To create code blocks, wrap the content inside double quotes like: "const express = require(&#10;express&#10;);" ' 
+                        class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-slate-200 focus:outline-none focus:border-violet-500 font-mono text-sm" required></textarea>
+                </div>
+
+                <div class="flex justify-end pt-2">
+                    <button type="submit" class="bg-violet-600 hover:bg-violet-500 text-white font-medium px-6 py-3 rounded-xl transition duration-200 flex items-center space-x-2 cursor-pointer shadow-lg shadow-violet-600/20">
+                        <i class="fa-solid fa-plus text-sm"></i>
+                        <span>Publish Video</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer class="border-t border-slate-900 bg-slate-950/80 py-6 text-center text-sm text-slate-500">
+        &copy; 2026 vi.video. Built for Developers.
+    </footer>
+
+    <script>
+        // Sample seed configuration data 
+        const defaultVideos = [
+            {
+                id: 1,
+                title: "Setting Up an Express.js Server Architecture",
+                embedUrl: "https://www.youtube.com/embed/TlB_eWDSMt4",
+                description: 'To initialize your backend framework, set up your primary entry application layer utilizing the following foundation configuration structure:\n\n"const express = require(\'express\');\nconst app = express();\nconst PORT = process.env.PORT || 3000;\n\napp.use(express.json());\n\napp.get(\'/\', (req, res) => {\n    res.send({ status: \'System operational\' });\n});\n\napp.listen(PORT, () => console.log(\`Server online on port ${PORT}\`));"'
+            }
+        ];
+
+        // Initialize state inside browser storage
+        if (!localStorage.getItem('vi_videos')) {
+            localStorage.setItem('vi_videos', JSON.stringify(defaultVideos));
+        }
+
+        // View Routing Management
+        function handleRouting() {
+            const currentHash = window.location.hash;
+            const publicView = document.getElementById('public-view');
+            const hostView = document.getElementById('host-view');
+
+            if (currentHash === '#host') {
+                publicView.classList.add('hidden');
+                hostView.classList.remove('hidden');
+                document.title = "Host Panel | vi.video";
+            } else {
+                hostView.classList.add('hidden');
+                publicView.classList.remove('hidden');
+                document.title = "vi.video | Premium Coding Tutorials";
+                renderVideos();
+            }
+        }
+
+        window.addEventListener('hashchange', handleRouting);
+        window.addEventListener('DOMContentLoaded', handleRouting);
+
+        // Parse descriptions to format string blocks inside double quotes into code panels
+        function parseDescription(desc) {
+            // Regex to find content between straight double quotes
+            const regex = /"([^"]+)"/g;
+            
+            // Check if string has matches
+            if (desc.includes('"')) {
+                return desc.replace(regex, function(match, captureGroup) {
+                    return `
+                        <div class="relative group my-4">
+                            <pre class="bg-slate-900 border border-slate-800 text-emerald-400 p-4 rounded-xl overflow-x-auto font-mono text-sm leading-relaxed block shadow-inner selection:bg-emerald-500/20">${escapeHtml(captureGroup.trim())}</pre>
+                            <button onclick="copyToClipboard(this)" class="absolute top-3 right-3 opacity-0 group-hover:opacity-100 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 hover:text-white px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all duration-150 flex items-center space-x-1 cursor-pointer">
+                                <i class="fa-regular fa-copy"></i>
+                                <span>Copy</span>
+                            </button>
+                        </div>
+                    `;
+                });
+            }
+            return `<p class="text-slate-300 leading-relaxed">${escapeHtml(desc)}</p>`;
+        }
+
+        function escapeHtml(text) {
+            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+
+        // Copy Feature Logic
+        function copyToClipboard(button) {
+            const codeBlock = button.previousElementSibling;
+            navigator.clipboard.writeText(codeBlock.innerText).then(() => {
+                const textSpan = button.querySelector('span');
+                const icon = button.querySelector('i');
+                
+                textSpan.innerText = "Copied!";
+                icon.className = "fa-solid fa-check text-emerald-400";
+                
+                setTimeout(() => {
+                    textSpan.innerText = "Copy";
+                    icon.className = "fa-regular fa-copy";
+                }, 2000);
+            });
+        }
+
+        // Render Cards View Functionality
+        function renderVideos() {
+            const videos = JSON.parse(localStorage.getItem('vi_videos')) || [];
+            const container = document.getElementById('video-list');
+            container.innerHTML = '';
+
+            if (videos.length === 0) {
+                container.innerHTML = `<div class="text-center py-12 text-slate-500 font-medium">No tutorials hosted yet. Access /#host to add content.</div>`;
+                return;
+            }
+
+            videos.forEach(video => {
+                const item = document.createElement('div');
+                item.className = "bg-slate-900/40 border border-slate-800/80 rounded-2xl overflow-hidden shadow-xl flex flex-col backdrop-blur-sm";
+                item.innerHTML = `
+                    <div class="relative w-full aspect-video bg-black">
+                        <iframe src="${video.embedUrl}" class="absolute top-0 left-0 w-full h-full border-0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+                        </iframe>
+                    </div>
+                    <div class="p-6 md:p-8 space-y-4">
+                        <h3 class="text-xl md:text-2xl font-bold text-white tracking-tight">${escapeHtml(video.title)}</h3>
+                        <div class="text-slate-300 space-y-2 whitespace-pre-line text-sm md:text-base">${parseDescription(video.description)}</div>
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        // Submission Data Processing
+        document.getElementById('add-video-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            let inputField = document.getElementById('video-iframe').value.trim();
+            const title = document.getElementById('video-title').value.trim();
+            const description = document.getElementById('video-desc').value.trim();
+            
+            let embedUrl = inputField;
+
+            // Extract src if full iframe element code block was passed down directly
+            if (inputField.startsWith('<iframe')) {
+                const match = inputField.match(/src=["']([^"']+)["']/);
+                if (match && match[1]) {
+                    embedUrl = match[1];
+                }
+            }
+
+            const newVideo = {
+                id: Date.now(),
+                title,
+                embedUrl,
+                description
+            };
+
+            const currentVideos = JSON.parse(localStorage.getItem('vi_videos')) || [];
+            currentVideos.unshift(newVideo); // Adds newest on top
+            localStorage.setItem('vi_videos', JSON.stringify(currentVideos));
+
+            // Clear configuration values, alert and route back home
+            this.reset();
+            alert("Video configuration published successfully!");
+            window.location.hash = '';
+        });
+    </script>
+</body>
+</html>
