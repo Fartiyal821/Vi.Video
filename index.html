@@ -43,7 +43,7 @@
             </div>
     </main>
 
-    <main id="host-view" class="hidden flex-grow container mx-auto px-4 py-8">
+    <main id="host-view" style="display: none;" class="flex-grow container mx-auto px-4 py-8">
         <div class="max-w-3xl mx-auto bg-slate-900 border border-slate-800 rounded-2xl p-6 md:p-8 shadow-2xl">
             <div class="flex items-center space-x-3 mb-6 border-b border-slate-800 pb-4">
                 <i class="fa-solid fa-sliders text-2xl text-violet-500"></i>
@@ -93,20 +93,20 @@
         
         const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // View Routing Engine
+        // Explicit View Routing Engine (Fixed to explicitly toggle display block/none)
         function handleRouting() {
             const currentHash = window.location.hash;
             const publicView = document.getElementById('public-view');
             const hostView = document.getElementById('host-view');
 
             if (currentHash === '#host') {
-                publicView.classList.add('hidden');
-                hostView.classList.remove('hidden');
+                publicView.style.display = 'none';
+                hostView.style.display = 'block';
                 document.title = "Host Panel | vi.video";
                 window.scrollTo(0, 0);
             } else {
-                hostView.classList.add('hidden');
-                publicView.classList.remove('hidden');
+                hostView.style.display = 'none';
+                publicView.style.display = 'block';
                 document.title = "vi.video | Premium Coding Tutorials";
                 renderVideos(); 
             }
