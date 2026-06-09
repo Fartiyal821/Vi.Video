@@ -68,12 +68,11 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // Use the exact same connection keys as index.html
+        // Make sure these match the keys in index.html exactly!
         const SUPABASE_URL = "https://your-project-id.supabase.co";
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.your-actual-anon-key";
         const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // Handle submissions to the global database layer
         document.getElementById('add-video-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -83,6 +82,7 @@
             
             let embedUrl = inputField;
 
+            // Extract exact source attributes out of entire raw iframe syntax trees automatically
             if (inputField.startsWith('<iframe')) {
                 const match = inputField.match(/src=["']([^"']+)["']/);
                 if (match && match[1]) {
@@ -90,6 +90,7 @@
                 }
             }
 
+            // Sync structural payload data directly with remote global infrastructure clusters
             const { error } = await supabase
                 .from('videos')
                 .insert([{ title, embedUrl, description }]);
@@ -101,7 +102,9 @@
 
             this.reset();
             alert("Video successfully added to the global database!");
-            window.location.href = 'index.html'; // Instantly route to home to view results
+            
+            // This line instantly redirects the creator right back to the homepage feed to review execution
+            window.location.href = 'index.html'; 
         });
     </script>
 </body>
