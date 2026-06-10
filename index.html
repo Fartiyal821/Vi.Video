@@ -5,37 +5,31 @@
 <title>BB.Blogs</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-<style>
-*{
-box-sizing:border-box;
-font-family:'Inter', sans-serif;
-}
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
+<style>
 body{
 margin:0;
-background: radial-gradient(circle at top,#0f172a,#050814);
+font-family:Inter;
+background:#0b1020;
 color:white;
 }
 
 header{
 text-align:center;
-padding:30px 20px;
+padding:25px;
+background:#111827;
 }
 
 header h1{
 margin:0;
-font-size:42px;
-background: linear-gradient(90deg,#60a5fa,#a78bfa,#34d399);
+font-size:38px;
+background:linear-gradient(90deg,#60a5fa,#a78bfa,#34d399);
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
-}
-
-header p{
-color:#94a3b8;
-margin-top:8px;
 }
 
 .container{
@@ -44,95 +38,86 @@ margin:auto;
 padding:20px;
 }
 
-/* POST BOX */
-.post-box{
-background: rgba(255,255,255,0.06);
-backdrop-filter: blur(12px);
-border:1px solid rgba(255,255,255,0.1);
-padding:20px;
-border-radius:16px;
-box-shadow:0 10px 30px rgba(0,0,0,0.4);
-margin-bottom:25px;
-}
-
-textarea{
-width:100%;
-height:130px;
+/* INPUT */
+.box{
+background:#111827;
 padding:15px;
 border-radius:12px;
+margin-bottom:15px;
+}
+
+textarea,input{
+width:100%;
+padding:10px;
+margin-top:8px;
+border-radius:8px;
 border:none;
 outline:none;
-resize:none;
 background:#0b1220;
 color:white;
-font-size:14px;
-border:1px solid rgba(255,255,255,0.08);
 }
 
-textarea:focus{
-border:1px solid #60a5fa;
-}
-
-/* BUTTON */
 button{
-margin-top:12px;
-padding:12px 18px;
+margin-top:10px;
+padding:10px 15px;
 border:none;
-border-radius:10px;
+border-radius:8px;
 cursor:pointer;
-background: linear-gradient(90deg,#60a5fa,#a78bfa);
-color:white;
+background:#60a5fa;
 font-weight:600;
-transition:0.2s;
 }
 
-button:hover{
-transform:scale(1.05);
-}
-
-/* BLOG CARD */
 .blog{
-background: rgba(255,255,255,0.06);
-backdrop-filter: blur(10px);
-border:1px solid rgba(255,255,255,0.08);
-padding:18px;
-border-radius:16px;
-margin-bottom:15px;
-transition:0.2s;
+background:#111827;
+padding:15px;
+border-radius:12px;
+margin-bottom:12px;
 }
 
-.blog:hover{
-transform:translateY(-3px);
-}
-
-.username{
-font-weight:600;
+.user{
 color:#34d399;
-margin-bottom:10px;
+font-weight:600;
 }
 
-/* TEXT */
-.normal{
-color:#e2e8f0;
-line-height:1.6;
-white-space:pre-wrap;
+.meta{
+font-size:12px;
+color:#9ca3af;
+margin-top:5px;
 }
 
-/* COPY BLOCK */
 .block{
-background:#000;
-padding:12px;
-border-radius:10px;
+background:black;
+padding:10px;
+border-radius:8px;
+margin-top:8px;
 white-space:pre-wrap;
 user-select:all;
-border:1px solid rgba(255,255,255,0.1);
-color:#f8fafc;
 }
 
-/* MOBILE */
-@media(max-width:600px){
-header h1{font-size:32px;}
+.actions{
+margin-top:10px;
+display:flex;
+gap:10px;
+flex-wrap:wrap;
 }
+
+.smallbtn{
+padding:6px 10px;
+font-size:12px;
+background:#1f2937;
+color:white;
+border-radius:6px;
+cursor:pointer;
+}
+
+.comment{
+margin-top:8px;
+padding:8px;
+background:#0b1220;
+border-radius:6px;
+font-size:13px;
+}
+
 </style>
 </head>
 
@@ -140,79 +125,153 @@ header h1{font-size:32px;}
 
 <header>
 <h1>BB.Blogs</h1>
-<p>Write. Share. Inspire globally.</p>
+<p>Global Coding & Ideas Platform</p>
 </header>
 
 <div class="container">
 
-<!-- WRITE -->
-<div class="post-box">
-<h3>Create Your Blog</h3>
-<textarea id="blogText" placeholder='Write your blog... use "text" for copyable block'></textarea>
-<button onclick="publishBlog()">Publish</button>
+<!-- CREATE POST -->
+<div class="box">
+<h3>Create Blog</h3>
+
+<input id="username" placeholder="Your name">
+
+<input id="tags" placeholder="Tags (e.g. coding, ai, life)">
+
+<textarea id="text" placeholder='Write blog... use "text" for block'></textarea>
+
+<button onclick="postBlog()">Publish</button>
 </div>
 
-<!-- BLOGS -->
-<div id="blogList"></div>
+<!-- SEARCH -->
+<div class="box">
+<input id="search" placeholder="Search blogs..." onkeyup="render()">
+</div>
+
+<!-- BLOG LIST -->
+<div id="blogs"></div>
 
 </div>
 
 <script>
+// 🔥 FIREBASE CONFIG (REPLACE THIS)
+const firebaseConfig = {
+apiKey: "YOUR_API_KEY",
+authDomain: "YOUR_PROJECT.firebaseapp.com",
+projectId: "YOUR_PROJECT_ID",
+storageBucket: "YOUR_PROJECT.appspot.com",
+messagingSenderId: "XXXX",
+appId: "XXXX"
+};
 
-let blogs = JSON.parse(localStorage.getItem("bbblogs") || "[]");
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
-function renderBlogs(){
-const list = document.getElementById("blogList");
-list.innerHTML = "";
+let posts = [];
 
-blogs.slice().reverse().forEach(b => {
+// POST BLOG
+async function postBlog(){
+let user = document.getElementById("username").value;
+let text = document.getElementById("text").value;
+let tags = document.getElementById("tags").value;
 
-let content;
+if(!user || !text) return alert("Fill all fields");
 
-if(b.text.startsWith('"') && b.text.endsWith('"')){
-content = `<div class="block">${b.text.slice(1,-1)}</div>`;
-} else {
-content = `<div class="normal">${b.text}</div>`;
+await db.collection("blogs").add({
+user,
+text,
+tags,
+likes:0,
+comments:[],
+time:Date.now()
+});
+
+document.getElementById("text").value="";
+loadBlogs();
 }
 
-list.innerHTML += `
+// LOAD BLOGS
+async function loadBlogs(){
+const snap = await db.collection("blogs").orderBy("time","desc").get();
+
+posts = [];
+snap.forEach(doc=>{
+posts.push({id:doc.id,...doc.data()});
+});
+
+render();
+}
+
+// LIKE
+async function like(id){
+let ref = db.collection("blogs").doc(id);
+let doc = await ref.get();
+ref.update({likes: (doc.data().likes||0)+1});
+loadBlogs();
+}
+
+// COMMENT
+async function comment(id){
+let c = prompt("Write comment:");
+if(!c) return;
+
+let ref = db.collection("blogs").doc(id);
+let doc = await ref.get();
+
+let arr = doc.data().comments || [];
+arr.push(c);
+
+ref.update({comments:arr});
+loadBlogs();
+}
+
+// RENDER
+function render(){
+let q = document.getElementById("search").value.toLowerCase();
+let div = document.getElementById("blogs");
+div.innerHTML="";
+
+let filtered = posts.filter(p =>
+p.text.toLowerCase().includes(q) ||
+p.user.toLowerCase().includes(q) ||
+(p.tags||"").toLowerCase().includes(q)
+);
+
+// trending sort (likes priority if search empty)
+if(!q){
+filtered.sort((a,b)=>b.likes-a.likes);
+}
+
+filtered.forEach(p=>{
+
+let content = (p.text.startsWith('"') && p.text.endsWith('"'))
+? `<div class="block">${p.text.slice(1,-1)}</div>`
+: `<div>${p.text}</div>`;
+
+div.innerHTML += `
 <div class="blog">
-<div class="username">👤 ${b.user}</div>
+<div class="user">👤 ${p.user}</div>
+<div class="meta">🏷️ ${p.tags || "no tags"} | ❤️ ${p.likes||0}</div>
+
 ${content}
+
+<div class="actions">
+<button class="smallbtn" onclick="like('${p.id}')">❤️ Like</button>
+<button class="smallbtn" onclick="comment('${p.id}')">💬 Comment</button>
+</div>
+
+<div>
+${(p.comments||[]).map(c=>`<div class="comment">💬 ${c}</div>`).join("")}
+</div>
 </div>
 `;
 });
 }
 
-function publishBlog(){
+// AUTO REFRESH
+setInterval(loadBlogs,5000);
 
-let text = document.getElementById("blogText").value;
-
-if(!text.trim()){
-alert("Write something first!");
-return;
-}
-
-let user = prompt("Enter your name:");
-
-if(!user || !user.trim()){
-alert("Name required!");
-return;
-}
-
-blogs.push({
-user:user,
-text:text
-});
-
-localStorage.setItem("bbblogs", JSON.stringify(blogs));
-
-document.getElementById("blogText").value = "";
-
-renderBlogs();
-}
-
-renderBlogs();
+loadBlogs();
 
 </script>
 
