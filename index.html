@@ -2,92 +2,136 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>vi.video</title>
+<title>BB.Blogs</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- FAVICON -->
-<link rel="icon" type="image/png"
-href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABKUlEQVR4nO3aQQrCQBBA0f//Z9sCk0Qm2gQ2QbQmQ3kQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQAAAAAElFTkSuQmCC">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
+*{
+box-sizing:border-box;
+font-family:'Inter', sans-serif;
+}
+
 body{
 margin:0;
-font-family:Arial, sans-serif;
-background:#0f0f1a;
+background: radial-gradient(circle at top,#0f172a,#050814);
 color:white;
 }
 
 header{
-padding:20px;
-background:#111827;
-display:flex;
-justify-content:space-between;
-align-items:center;
+text-align:center;
+padding:30px 20px;
 }
 
 header h1{
-color:#4ade80;
 margin:0;
+font-size:42px;
+background: linear-gradient(90deg,#60a5fa,#a78bfa,#34d399);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+header p{
+color:#94a3b8;
+margin-top:8px;
 }
 
 .container{
+max-width:900px;
+margin:auto;
 padding:20px;
 }
 
-.video-card{
-background:#1f2937;
-padding:15px;
-margin-bottom:20px;
-border-radius:10px;
-box-shadow:0 0 10px rgba(0,0,0,0.4);
+/* POST BOX */
+.post-box{
+background: rgba(255,255,255,0.06);
+backdrop-filter: blur(12px);
+border:1px solid rgba(255,255,255,0.1);
+padding:20px;
+border-radius:16px;
+box-shadow:0 10px 30px rgba(0,0,0,0.4);
+margin-bottom:25px;
 }
 
-iframe{
+textarea{
 width:100%;
-height:400px;
+height:130px;
+padding:15px;
+border-radius:12px;
+border:none;
+outline:none;
+resize:none;
+background:#0b1220;
+color:white;
+font-size:14px;
+border:1px solid rgba(255,255,255,0.08);
+}
+
+textarea:focus{
+border:1px solid #60a5fa;
+}
+
+/* BUTTON */
+button{
+margin-top:12px;
+padding:12px 18px;
+border:none;
 border-radius:10px;
+cursor:pointer;
+background: linear-gradient(90deg,#60a5fa,#a78bfa);
+color:white;
+font-weight:600;
+transition:0.2s;
 }
 
-.desc{
-margin-top:10px;
-background:#111827;
-padding:10px;
-border-radius:8px;
+button:hover{
+transform:scale(1.05);
 }
 
-.copybox{
+/* BLOG CARD */
+.blog{
+background: rgba(255,255,255,0.06);
+backdrop-filter: blur(10px);
+border:1px solid rgba(255,255,255,0.08);
+padding:18px;
+border-radius:16px;
+margin-bottom:15px;
+transition:0.2s;
+}
+
+.blog:hover{
+transform:translateY(-3px);
+}
+
+.username{
+font-weight:600;
+color:#34d399;
+margin-bottom:10px;
+}
+
+/* TEXT */
+.normal{
+color:#e2e8f0;
+line-height:1.6;
+white-space:pre-wrap;
+}
+
+/* COPY BLOCK */
+.block{
 background:#000;
-padding:10px;
-border-radius:5px;
+padding:12px;
+border-radius:10px;
 white-space:pre-wrap;
 user-select:all;
+border:1px solid rgba(255,255,255,0.1);
+color:#f8fafc;
 }
 
-button{
-padding:10px 15px;
-border:none;
-border-radius:6px;
-cursor:pointer;
-background:#4ade80;
-color:black;
-font-weight:bold;
-}
-
-.host-panel{
-display:none;
-padding:20px;
-}
-
-input, textarea{
-width:100%;
-padding:10px;
-margin:10px 0;
-border-radius:6px;
-border:none;
-}
-
-small{
-color:#aaa;
+/* MOBILE */
+@media(max-width:600px){
+header h1{font-size:32px;}
 }
 </style>
 </head>
@@ -95,77 +139,81 @@ color:#aaa;
 <body>
 
 <header>
-<h1>vi.video</h1>
-<span>Professional Coding Video Hub</span>
+<h1>BB.Blogs</h1>
+<p>Write. Share. Inspire globally.</p>
 </header>
 
-<!-- PUBLIC VIEW -->
-<div class="container" id="publicView"></div>
+<div class="container">
 
-<!-- HOST PANEL -->
-<div class="host-panel" id="hostPanel">
-<h2>Host Panel (Hidden Mode)</h2>
+<!-- WRITE -->
+<div class="post-box">
+<h3>Create Your Blog</h3>
+<textarea id="blogText" placeholder='Write your blog... use "text" for copyable block'></textarea>
+<button onclick="publishBlog()">Publish</button>
+</div>
 
-<small>Paste full YouTube iframe code below</small>
-<textarea id="iframeCode" placeholder="<iframe ...></iframe>"></textarea>
+<!-- BLOGS -->
+<div id="blogList"></div>
 
-<small>Description (use "" for copyable block)</small>
-<textarea id="desc"></textarea>
-
-<button onclick="addVideo()">Add Video</button>
 </div>
 
 <script>
-// detect host mode
-const isHost = window.location.pathname.includes("/host");
 
-const publicView = document.getElementById("publicView");
-const hostPanel = document.getElementById("hostPanel");
+let blogs = JSON.parse(localStorage.getItem("bbblogs") || "[]");
 
-let videos = JSON.parse(localStorage.getItem("vivideos") || "[]");
+function renderBlogs(){
+const list = document.getElementById("blogList");
+list.innerHTML = "";
 
-function render(){
-publicView.innerHTML = "";
+blogs.slice().reverse().forEach(b => {
 
-videos.forEach(v => {
+let content;
 
-let descHTML;
-
-if(v.desc.startsWith('"') && v.desc.endsWith('"')){
-descHTML = `<div class="copybox">${v.desc.slice(1,-1)}</div>`;
+if(b.text.startsWith('"') && b.text.endsWith('"')){
+content = `<div class="block">${b.text.slice(1,-1)}</div>`;
 } else {
-descHTML = `<div class="desc">${v.desc}</div>`;
+content = `<div class="normal">${b.text}</div>`;
 }
 
-publicView.innerHTML += `
-<div class="video-card">
-${v.iframe}
-${descHTML}
+list.innerHTML += `
+<div class="blog">
+<div class="username">👤 ${b.user}</div>
+${content}
 </div>
 `;
 });
 }
 
-function addVideo(){
-const iframe = document.getElementById("iframeCode").value;
-const desc = document.getElementById("desc").value;
+function publishBlog(){
 
-videos.push({iframe, desc});
-localStorage.setItem("vivideos", JSON.stringify(videos));
+let text = document.getElementById("blogText").value;
 
-document.getElementById("iframeCode").value = "";
-document.getElementById("desc").value = "";
-
-render();
-alert("Video Added!");
+if(!text.trim()){
+alert("Write something first!");
+return;
 }
 
-// mode switch
-if(isHost){
-hostPanel.style.display = "block";
-} else {
-render();
+let user = prompt("Enter your name:");
+
+if(!user || !user.trim()){
+alert("Name required!");
+return;
 }
+
+blogs.push({
+user:user,
+text:text
+});
+
+localStorage.setItem("bbblogs", JSON.stringify(blogs));
+
+document.getElementById("blogText").value = "";
+
+renderBlogs();
+}
+
+renderBlogs();
+
 </script>
 
 </body>
